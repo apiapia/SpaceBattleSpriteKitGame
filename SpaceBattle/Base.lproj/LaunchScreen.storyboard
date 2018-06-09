@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BG_SpaceBattle_planet" translatesAutoresizingMaskIntoConstraints="NO" id="xR1-CF-Vv1">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="xR1-CF-Vv1" secondAttribute="height" multiplier="375:667" id="AIL-7y-ABn"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="dte-Ec-vPC">
+                                <rect key="frame" x="67" y="249" width="240" height="168"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="dte-Ec-vPC" firstAttribute="centerY" secondItem="xR1-CF-Vv1" secondAttribute="centerY" id="8HH-p5-IEe"/>
+                            <constraint firstItem="xR1-CF-Vv1" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="MDZ-Q1-GeW"/>
+                            <constraint firstItem="dte-Ec-vPC" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="229" id="Y4O-zS-6ow"/>
+                            <constraint firstItem="xR1-CF-Vv1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ZCp-Gu-jlw"/>
+                            <constraint firstItem="xR1-CF-Vv1" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="g3f-Hi-qtZ"/>
+                            <constraint firstItem="dte-Ec-vPC" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="67" id="oIC-tb-d67"/>
+                            <constraint firstItem="xR1-CF-Vv1" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="q7y-nh-aVH"/>
+                            <constraint firstItem="dte-Ec-vPC" firstAttribute="centerX" secondItem="xR1-CF-Vv1" secondAttribute="centerX" id="tpj-Xl-W2Q"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="52" y="374.66266866566718"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="BG_SpaceBattle_planet" width="1536" height="2048"/>
+        <image name="logo" width="520" height="547"/>
+    </resources>
+</document>
