@@ -1,3 +1,10 @@
+ <img src="https://upload-images.jianshu.io/upload_images/3896436-13850b3081fef245.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+ 
+ <img src="https://upload-images.jianshu.io/upload_images/3896436-f24ff8be3b6f9f33.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+ 
+ <img src="https://upload-images.jianshu.io/upload_images/3896436-10ef8db5f7e412ae.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+ 
+
 /*
  *  *** 游戏元素使用条款及注意事项 ***
  *
@@ -30,5 +37,4 @@
  *  8、Background Music   如何添加背景音乐;
  *  9、Particle           粒子爆炸特效;
  */
- 
- <img src="https://upload-images.jianshu.io/upload_images/3896436-13850b3081fef245.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+
