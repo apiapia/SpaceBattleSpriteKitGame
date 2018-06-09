@@ -30,3 +30,5 @@
  *  8、Background Music   如何添加背景音乐;
  *  9、Particle           粒子爆炸特效;
  */
+ 
+ <img src="https://upload-images.jianshu.io/upload_images/3896436-13850b3081fef245.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
