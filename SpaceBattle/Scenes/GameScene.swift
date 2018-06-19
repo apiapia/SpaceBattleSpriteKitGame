@@ -3,15 +3,16 @@
 /*
  *  *** 游戏元素使用条款及注意事项 ***
  *
- *  游戏中的所有元素全部由iFIERO所原创(除部份音乐引用之外)，包括人物、音乐、场景等，
- *  创作的初衷就是让更多的游戏爱好者可以在开发游戏中获得自豪感 -- 让手机游戏开发变得简单。
- *  秉着开源分享的原则,iFIERO发布的游戏都尽可能的易懂实用，并开放所有源码，
- *  任何使用者都可以使用游戏中的代码块，也可以进行拷贝、修改、更新、升级，无须再经过iFIERO的同意。
- *  但这并不表示可以任意复制、拆分其中的游戏元素而不注明出处，
- *  也不可复制其中的代码用于任何教学而不注明出处,
- *  也不可使用游戏中的人物、角色、场景元素进行任何形式的游戏上架而不注明出处；
- *  另外,iFIERO有商用授权游戏元素，获得iFIERO官方授权后，即无任何限制！
- *  请尊重帮助过你的iFIERO的知识产权，非常感谢！
+ *  游戏中的所有元素全部由iFIERO所原创(除注明引用之外)，包括人物、音乐、场景等;
+ *  创作的初衷就是让更多的游戏爱好者可以在开发游戏中获得自豪感 -- 让手机游戏开发变得简单;
+ *  秉着开源分享的原则,iFIERO发布的游戏都尽可能的易懂实用，并开放所有源码;
+ *  任何使用者都可以使用游戏中的代码块，也可以进行拷贝、修改、更新、升级，无须再经过iFIERO的同意;
+ *  但这并不表示可以任意复制、拆分其中的游戏元素:
+ *  用于[商业目的]而不注明出处;
+ *  用于[任何教学]而不注明出处;
+ *  用于[游戏上架]而不注明出处；
+ *  另外,iFIERO有商用授权游戏元素，获得iFIERO官方授权后，即无任何限制;
+ *  请尊重帮助过你的iFIERO的知识产权，非常感谢;
  *
  *  Created by VANGO杨 && ANDREW陈
  *  Copyright © 2018 iFiero. All rights reserved.
@@ -92,7 +93,8 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         addChild(bgMusic)
         // 加入玩家飞船
         playerNode = childNode(withName: "SpaceShip") as! SKSpriteNode
-        playerNode.physicsBody = SKPhysicsBody(circleOfRadius: self.playerNode.size.width / 2)
+        // playerNode.physicsBody = SKPhysicsBody(circleOfRadius: self.playerNode.size.width / 2)
+        playerNode.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "Player"), size: SKTexture(imageNamed: "Player").size())
         playerNode.physicsBody?.affectedByGravity = false // 不受物理世界的重力影响
         playerNode.physicsBody?.isDynamic = true 
         playerNode.physicsBody?.categoryBitMask    = PhysicsCategory.SpaceShip
