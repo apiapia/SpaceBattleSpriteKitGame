@@ -355,8 +355,4 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     }
 }
 
-视频讲解：
-
-<video controls="controls" width="99%" height="530">
-<source src="http://1253242383.vod2.myqcloud.com/295ae960vodgzp1253242383/b5e61a767447398156919419325/BeXiaGCYoTEA.mp4" type="video/mp4" />
-</video>
+视频讲解：宇宙大战 SPACE BATTLE (一) SpriteKit游戏视频教程 http://www.ifiero.com/index.php/archives/spacebattlespritekitvideogametutorial
