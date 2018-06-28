@@ -22,7 +22,8 @@
  *  *** 以上使用条款及注意事项为iFIRO的保留元素,我们保留追究侵权的权利 ***
  */
 
-/*  SpaceBattle 宇宙大战 在此游戏中您将获得如下技能：
+/*
+ * SpaceBattle 宇宙大战 在此游戏中您将获得如下技能：
  *  1、LaunchScreen       学习如何设置游戏启动画面;
  *  2、Scenes             学习如何切换不同的场景 主菜单+游戏场景+游戏结束场景;
  *  3、Accleroation       利用重力加速度 让飞船左右移动;
@@ -32,6 +33,7 @@
  *  7、Random             利用可复用的随机函数生成Enemy;
  *  8、Background Music   如何添加背景音乐;
  *  9、Particle           粒子爆炸特效;
+ *
  */
 
 
@@ -66,6 +68,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     
     
     override func didMove(to view: SKView) {
+        print(PhysicsCategory.Alien)
         // 建立物理世界 重力向下
         physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
         // 碰撞接触代理
@@ -120,8 +123,6 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         }
         // spawnAlien()
         Timer.scheduledTimer(timeInterval: TimeInterval(0.5), target: self, selector: #selector(GameScene.spawnAlien), userInfo: nil, repeats: true)
-        
-        // Action 无限生成Alien
         
     }
     
@@ -217,9 +218,9 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         alien.zPosition   = 1
         alien.name = "Alien"
         var xPosition:CGFloat = 0.0
-        // 生成随机的x-Axis轴的位置
-        xPosition = CGFloat.random(min: -self.frame.size.width+alien.size.width, max: self.frame.size.width - alien.size.width)
-        alien.position = CGPoint(x: xPosition, y: self.frame.size.height + alien.size.height * 2)
+        // 生成随机的x-Axis轴的位置 anchorPoint(0.5,0.5)
+        xPosition = CGFloat.random(min: -self.frame.size.width / 2 + alien.size.width, max: self.frame.size.width / 2  - alien.size.width)
+        alien.position = CGPoint(x: xPosition, y: self.frame.size.height / 2  + alien.size.height * 2)
         self.addChild(alien)
         // 物理世界 PhysicsWorld
         // 1.设置物理身体
@@ -228,7 +229,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         alien.physicsBody?.affectedByGravity = false
         // 2.设置唯一属性
         alien.physicsBody?.categoryBitMask   = PhysicsCategory.Alien
-        // 3.和哪些节点Node会发生碰撞
+        // 3.和哪些节点Node发生碰撞后发出通知
         alien.physicsBody?.contactTestBitMask = PhysicsCategory.BulletBlue | PhysicsCategory.SpaceShip
         alien.physicsBody?.collisionBitMask   = PhysicsCategory.None
         
