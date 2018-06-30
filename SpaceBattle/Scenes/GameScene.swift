@@ -68,7 +68,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     
     
     override func didMove(to view: SKView) {
-        print(PhysicsCategory.Alien)
+        
         // 建立物理世界 重力向下
         physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
         // 碰撞接触代理
@@ -104,40 +104,45 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         playerNode.physicsBody?.contactTestBitMask = PhysicsCategory.Alien
         playerNode.physicsBody?.collisionBitMask   = PhysicsCategory.None
         
-        /*
-         * 手机加速度感应
-         * 注意：加速度感应在模拟器Simulater无法感应，须用真机进行调试
-         */
-        motionManager.accelerometerUpdateInterval = 0.2 // 感应时间
-        motionManager.startAccelerometerUpdates(to: OperationQueue.current!) { (data, error) in
-            //1. 取得data数据;
-            guard let accelerometerData = data else {
-                return
-            }
-            //2. 取得加速度
-            let acceleration = accelerometerData.acceleration
-            //3. 更新XAcceleration的值
-            self.xAcceleration = CGFloat(acceleration.x) * 0.75 + self.xAcceleration * 0.5
-            self.yAcceleration = CGFloat(acceleration.y) * 0.75 + self.yAcceleration * 0.5
-            
-        }
+        startMonitoringAcceleration() /// 获取手机加速计感应
         // spawnAlien()
         Timer.scheduledTimer(timeInterval: TimeInterval(0.5), target: self, selector: #selector(GameScene.spawnAlien), userInfo: nil, repeats: true)
         
     }
     
-    override func update(_ currentTime: TimeInterval) {
-        // 每Frame的时间差
-        if lastUpdateTimeInterval == 0 {
-            lastUpdateTimeInterval = currentTime
+    /*
+     * 手机加速计感应
+     * 注意：加速计应在模拟器Simulater无法感应，须用真机进行调试
+     */
+    func startMonitoringAcceleration(){
+        if motionManager.isAccelerometerAvailable {
+            updateAccleration()
         }
-        deltaTime = currentTime - lastUpdateTimeInterval
-        lastUpdateTimeInterval = currentTime
-        
-        // endless 无限循环星空背景
-        updateBackground(deltaTime: deltaTime)
     }
     
+    func updateAccleration(){
+        motionManager.accelerometerUpdateInterval = 0.2 /// 感应时间
+        motionManager.startAccelerometerUpdates(to: OperationQueue.current!) { (data, error) in
+            ///1. 取得data数据;
+            guard let accelerometerData = data else {
+                return
+            }
+            ///2. 取得加速度
+            let acceleration = accelerometerData.acceleration
+            ///3. 更新XAcceleration的值
+            let filterFactor:CGFloat = 0.75 //fiter的加入是很有必要的，这样处理一下而已让你得到的数据更加平滑
+            self.xAcceleration = CGFloat(acceleration.x) * filterFactor + self.xAcceleration * (1 - filterFactor)
+            self.yAcceleration = CGFloat(acceleration.y) * filterFactor + self.yAcceleration * (1 - filterFactor)
+            
+        }
+    }
+    //MARK: -- 停止获取Acceleration
+    func stopMonitoringAcceleration(){
+        if motionManager.isAccelerometerAvailable && motionManager.isAccelerometerActive {
+            motionManager.stopAccelerometerUpdates()
+        }
+    }
+    /// command + option + <- (箭头) 折叠 || command + option + -> (箭头) 打开
     func  updateBackground(deltaTime:TimeInterval){
         // 下移
         bgNode1.position.y -= CGFloat(deltaTime * 300)
@@ -241,48 +246,8 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
                                      })]))
         
     }
-    // 手机重力感应
-    override func didSimulatePhysics() {
-        // 取得xAcceleration的位置并进行更新
-        self.playerNode.position.x += self.xAcceleration * 50
-        self.playerNode.position.y += self.yAcceleration * 50
-        // 让player => SpaceShip在屏幕之间滑动 x
-        // X-Axis X轴水平方向 最小值
-        // 如果player的x-axis最小值 < player飞船的size.with 1/2 设飞船的最小值为 size.with/2
-        if self.playerNode.position.x <  -self.frame.size.width / 2 + self.playerNode.size.width {
-            self.playerNode.position.x =  -self.frame.size.width / 2 + self.playerNode.size.width
-        }
-        // 最大值
-        if self.playerNode.position.x >   self.frame.size.width / 2 - self.playerNode.size.width {
-            self.playerNode.position.x =  self.frame.size.width / 2 - self.playerNode.size.width
-        }
-        // Y-Axis Y轴方向
-        if self.playerNode.position.y  > -self.playerNode.size.height {
-            self.playerNode.position.y =  -self.playerNode.size.height
-        }
-        
-        if self.playerNode.position.y <  -self.frame.size.height / 2 + self.playerNode.size.height {
-            self.playerNode.position.y = -self.frame.size.height / 2 + self.playerNode.size.height
-        }
-    }
     
-    //MARK:- 发生碰撞
-    func didBegin(_ contact: SKPhysicsContact) {
-        
-        let contactMask = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
-        
-        switch contactMask {
-        // 子弹vs外星人
-        case PhysicsCategory.Alien | PhysicsCategory.BulletBlue:
-            bulletHitAlien(nodeA: contact.bodyA.node as! SKSpriteNode,nodeB: contact.bodyB.node as! SKSpriteNode)
-        // 外星人Alien撞击到飞船
-        case PhysicsCategory.Alien | PhysicsCategory.SpaceShip:
-            alienHitSpaceShip(nodeA: contact.bodyA.node as! SKSpriteNode, nodeB: contact.bodyB.node as! SKSpriteNode)
-            
-        default:
-            break
-        }
-    }
+    
     // MARK: 子弹vs外星人
     func bulletHitAlien(nodeA:SKSpriteNode,nodeB:SKSpriteNode){
         
@@ -353,5 +318,64 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
             
         }
         
+    }
+    
+    //MARK: -  手机加速度计感应,在SpriteKit框架渲染每一帧的周期Loop中在didSimulatePhysics调用物理特性
+    override func didSimulatePhysics() {
+        /// 取得xAcceleration的加速度
+        /// 速度乘以时间得到应该移动的距离，更新现在飞船应该在的位置
+        self.playerNode.position.x += self.xAcceleration * 50 /// * 50表示时间
+        self.playerNode.position.y += self.yAcceleration * 50
+        // 让player => SpaceShip在屏幕之间滑动 x
+        // X-Axis X轴水平方向 最小值
+        // 如果player的x-axis最小值 < player飞船的size.with 1/2 设飞船的最小值为 size.with/2
+        if self.playerNode.position.x <  -self.frame.size.width / 2 + self.playerNode.size.width {
+            self.playerNode.position.x =  -self.frame.size.width / 2 + self.playerNode.size.width
+        }
+        // 最大值
+        if self.playerNode.position.x >   self.frame.size.width / 2 - self.playerNode.size.width {
+            self.playerNode.position.x =  self.frame.size.width / 2 - self.playerNode.size.width
+        }
+        // Y-Axis Y轴方向
+        if self.playerNode.position.y  > -self.playerNode.size.height {
+            self.playerNode.position.y =  -self.playerNode.size.height
+        }
+        
+        if self.playerNode.position.y <  -self.frame.size.height / 2 + self.playerNode.size.height {
+            self.playerNode.position.y = -self.frame.size.height / 2 + self.playerNode.size.height
+        }
+    }
+    
+    //MARK:- 发生碰撞
+    func didBegin(_ contact: SKPhysicsContact) {
+        
+        let contactMask = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
+        switch contactMask {
+        // 子弹vs外星人
+        case PhysicsCategory.Alien | PhysicsCategory.BulletBlue:
+            bulletHitAlien(nodeA: contact.bodyA.node as! SKSpriteNode,nodeB: contact.bodyB.node as! SKSpriteNode)
+        // 外星人Alien撞击到飞船
+        case PhysicsCategory.Alien | PhysicsCategory.SpaceShip:
+            alienHitSpaceShip(nodeA: contact.bodyA.node as! SKSpriteNode, nodeB: contact.bodyB.node as! SKSpriteNode)
+        default:
+            break
+        }
+    }
+    
+    override func update(_ currentTime: TimeInterval) {
+        // 每Frame的时间差
+        if lastUpdateTimeInterval == 0 {
+            lastUpdateTimeInterval = currentTime
+        }
+        deltaTime = currentTime - lastUpdateTimeInterval
+        lastUpdateTimeInterval = currentTime
+       
+        updateBackground(deltaTime: deltaTime) // endless 无限循环星空背景
+        
+    }
+    
+    // MARK: - 停止加速计
+    deinit {
+        stopMonitoringAcceleration()
     }
 }
