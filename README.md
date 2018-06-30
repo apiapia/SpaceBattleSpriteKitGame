@@ -1,9 +1,6 @@
- <img src="https://upload-images.jianshu.io/upload_images/3896436-13850b3081fef245.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+ <img src="https://upload-images.jianshu.io/upload_images/3896436-7becf3b55e8fb039.gif">
  
- <img src="https://upload-images.jianshu.io/upload_images/3896436-f24ff8be3b6f9f33.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
- 
- <img src="https://upload-images.jianshu.io/upload_images/3896436-10ef8db5f7e412ae.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
- 
+
 
 /*
  *  游戏中的所有元素全部由iFIERO所原创(除引用之外)，包括人物、音乐、场景等，
@@ -355,4 +352,5 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     }
 }
 
-
+视频讲解：宇宙大战 SPACE BATTLE (一) SpriteKit游戏视频教程 http://www.ifiero.com/index.php/archives/spacebattlespritekitvideogametutorial-1
+http://www.ifiero.com/index.php/archives/spacebattlespritekitvideogametutorial-2
