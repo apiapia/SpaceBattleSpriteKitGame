@@ -121,6 +121,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     }
     
     func updateAccleration(){
+        
         motionManager.accelerometerUpdateInterval = 0.2 /// 感应时间
         motionManager.startAccelerometerUpdates(to: OperationQueue.current!) { (data, error) in
             ///1. 取得data数据;
@@ -130,13 +131,13 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
             ///2. 取得加速度
             let acceleration = accelerometerData.acceleration
             ///3. 更新XAcceleration的值
-            let filterFactor:CGFloat = 0.75 //fiter的加入是很有必要的，这样处理一下而已让你得到的数据更加平滑
+            let filterFactor:CGFloat = 0.75 //fiter的加入是很有必要的，这样处理一下得到的数据更加平滑
             self.xAcceleration = CGFloat(acceleration.x) * filterFactor + self.xAcceleration * (1 - filterFactor)
             self.yAcceleration = CGFloat(acceleration.y) * filterFactor + self.yAcceleration * (1 - filterFactor)
             
         }
     }
-    //MARK: -- 停止获取Acceleration
+    //MARK: -- 停止Acceleration
     func stopMonitoringAcceleration(){
         if motionManager.isAccelerometerAvailable && motionManager.isAccelerometerActive {
             motionManager.stopAccelerometerUpdates()
@@ -192,7 +193,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         // bulletNode.run(SKAction.move(to:moveTo, duration: TimeInterval(0.5)))
         /*
          * 粒子效果
-         * 1.新建一个SKNODE => trailNode
+         * 1.新建一个SKNode => trailNode
          * 2.新建粒子效果SKEmitterNode,设置tragetNode = trailNode
          * 3.子弹加上emitterNode
          */
@@ -202,7 +203,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         addChild(trailNode)
         
         let emitterNode = SKEmitterNode(fileNamed: "ShootTrailBlue")! // particles文件夹存放粒子效果
-        emitterNode.targetNode = trailNode  // 设置粒子效果的目标为trailNode => 跟随新建的trailNode
+       // emitterNode.targetNode = trailNode  // 设置粒子效果的目标为trailNode => 跟随新建的trailNode
         bulletNode.addChild(emitterNode)    // 在子弹节点Node加上粒子效果;
         
         bulletNode.run(SKAction.sequence([
@@ -253,7 +254,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         
         // 击中粒子效果 Particle
         let explosion = SKEmitterNode(fileNamed: "ExplosionBlue")!
-        explosion.position = nodeA.position // 或者 nodeB.position
+        explosion.position = nodeA.position
         self.addChild(explosion)
         
         explosion.run(SKAction.sequence([
@@ -346,15 +347,15 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         }
     }
     
-    //MARK:- 发生碰撞
+    //MARK:- 发生碰撞时接收到通知
     func didBegin(_ contact: SKPhysicsContact) {
         
         let contactMask = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
         switch contactMask {
-        // 子弹vs外星人
+        /// 子弹vs外星人
         case PhysicsCategory.Alien | PhysicsCategory.BulletBlue:
             bulletHitAlien(nodeA: contact.bodyA.node as! SKSpriteNode,nodeB: contact.bodyB.node as! SKSpriteNode)
-        // 外星人Alien撞击到飞船
+        /// 外星人Alien撞击到飞船
         case PhysicsCategory.Alien | PhysicsCategory.SpaceShip:
             alienHitSpaceShip(nodeA: contact.bodyA.node as! SKSpriteNode, nodeB: contact.bodyB.node as! SKSpriteNode)
         default:
@@ -369,9 +370,8 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         }
         deltaTime = currentTime - lastUpdateTimeInterval
         lastUpdateTimeInterval = currentTime
-       
         updateBackground(deltaTime: deltaTime) // endless 无限循环星空背景
-        
+
     }
     
     // MARK: - 停止加速计
