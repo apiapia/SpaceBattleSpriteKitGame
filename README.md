@@ -1,6 +1,8 @@
+ 
+ *** 更新为游戏摇杆  ***
+ 
  <img src="https://upload-images.jianshu.io/upload_images/3896436-7becf3b55e8fb039.gif">
  
-
 
 /*
  *  游戏中的所有元素全部由iFIERO所原创(除引用之外)，包括人物、音乐、场景等，
