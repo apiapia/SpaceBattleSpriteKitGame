@@ -12,6 +12,7 @@
 		211B2D0C2077206B008686C2 /* CGPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211B2D0B2077206B008686C2 /* CGPoint+Extension.swift */; };
 		211B2D0E20772075008686C2 /* CGFloat+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211B2D0D20772075008686C2 /* CGFloat+Extension.swift */; };
 		211B2D1020778300008686C2 /* ExplosionBlue.sks in Resources */ = {isa = PBXBuildFile; fileRef = 211B2D0F20778300008686C2 /* ExplosionBlue.sks */; };
+		213B2E18210AC5A2008C3BA3 /* AnalogJoystick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213B2E17210AC5A2008C3BA3 /* AnalogJoystick.swift */; };
 		215A5350206FD07F0089ECDB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215A534F206FD07F0089ECDB /* AppDelegate.swift */; };
 		215A5352206FD07F0089ECDB /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 215A5351206FD07F0089ECDB /* GameScene.sks */; };
 		215A5356206FD07F0089ECDB /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215A5355206FD07F0089ECDB /* GameScene.swift */; };
@@ -37,6 +38,7 @@
 		211B2D0B2077206B008686C2 /* CGPoint+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
 		211B2D0D20772075008686C2 /* CGFloat+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extension.swift"; sourceTree = "<group>"; };
 		211B2D0F20778300008686C2 /* ExplosionBlue.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = ExplosionBlue.sks; sourceTree = "<group>"; };
+		213B2E17210AC5A2008C3BA3 /* AnalogJoystick.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalogJoystick.swift; sourceTree = "<group>"; };
 		215A534C206FD07F0089ECDB /* SpaceBattle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpaceBattle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		215A534F206FD07F0089ECDB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		215A5351206FD07F0089ECDB /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -72,10 +74,19 @@
 		211B2D0A2077193B008686C2 /* Utilites */ = {
 			isa = PBXGroup;
 			children = (
+				213B2E16210AC588008C3BA3 /* JoyStick */,
 				211B2D0D20772075008686C2 /* CGFloat+Extension.swift */,
 				211B2D0B2077206B008686C2 /* CGPoint+Extension.swift */,
 			);
 			path = Utilites;
+			sourceTree = "<group>";
+		};
+		213B2E16210AC588008C3BA3 /* JoyStick */ = {
+			isa = PBXGroup;
+			children = (
+				213B2E17210AC5A2008C3BA3 /* AnalogJoystick.swift */,
+			);
+			path = JoyStick;
 			sourceTree = "<group>";
 		};
 		215A5343206FD07F0089ECDB = {
@@ -231,6 +242,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				215A5356206FD07F0089ECDB /* GameScene.swift in Sources */,
+				213B2E18210AC5A2008C3BA3 /* AnalogJoystick.swift in Sources */,
 				215A5358206FD07F0089ECDB /* GameViewController.swift in Sources */,
 				21A5F81E207D17E80032B5E9 /* WonScene.swift in Sources */,
 				21A5F820207D18050032B5E9 /* LoseScene.swift in Sources */,

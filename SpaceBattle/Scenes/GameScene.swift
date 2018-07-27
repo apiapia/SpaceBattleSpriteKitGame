@@ -26,14 +26,14 @@
  * SpaceBattle 宇宙大战 在此游戏中您将获得如下技能：
  *  1、LaunchScreen       学习如何设置游戏启动画面;
  *  2、Scenes             学习如何切换不同的场景 主菜单+游戏场景+游戏结束场景;
- *  3、Accleroation       利用重力加速度 让飞船左右移动;
+ *  3、Accleroation       利用重力加速度 让飞船左右移动; (升级为JoyStick游戏摇杆);
  *  4、Endless Background 无限循环背景;
  *  5、Scene Edit         直接使用可见即所得操作;
  *  6、UserDefaults       保存游戏分数、最高分;
  *  7、Random             利用可复用的随机函数生成Enemy;
  *  8、Background Music   如何添加背景音乐;
  *  9、Particle           粒子爆炸特效;
- *
+ *  10、JoyStick          应用游戏摇杆操控飞船;
  */
 
 
@@ -58,13 +58,14 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     private var cScore:Int = 0
     private var highScore:SKLabelNode!    // 最高分数
     private var hScore:Int = 0
-    
+    private var joystick:AnalogJoystick!  // 游戏摇杆;
+    private var fireNode:SKSpriteNode!    // 子弹发射;
     
     var lastUpdateTimeInterval:TimeInterval = 0
     var deltaTime:TimeInterval = 0
-    let motionManager = CMMotionManager() // 重力加速度管理器
-    var xAcceleration:CGFloat  = 0        // 存放x左右移动的加速度变量
-    var yAcceleration:CGFloat  = 0
+//    let motionManager = CMMotionManager() // 重力加速度管理器
+//    var xAcceleration:CGFloat  = 0        // 存放x左右移动的加速度变量
+//    var yAcceleration:CGFloat  = 0
     
     
     override func didMove(to view: SKView) {
@@ -104,45 +105,91 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         playerNode.physicsBody?.contactTestBitMask = PhysicsCategory.Alien
         playerNode.physicsBody?.collisionBitMask   = PhysicsCategory.None
         
-        startMonitoringAcceleration() /// 获取手机加速计感应
+        //startMonitoringAcceleration() /// 获取手机加速计感应
         // spawnAlien()
         Timer.scheduledTimer(timeInterval: TimeInterval(0.5), target: self, selector: #selector(GameScene.spawnAlien), userInfo: nil, repeats: true)
-        
+        // 游戏手柄开始
+        createJoyStick()
+        createFireNode()
+    }
+    //MARK:-// 加入游戏手柄
+    func createJoyStick(){
+        joystick = AnalogJoystick(diameter: CGFloat(250.0))
+        joystick.stick.image = UIImage(named: "jStick")
+        joystick.substrate.image = UIImage(named: "jSubstrate")
+        joystick.zPosition = 1
+        joystick.position = CGPoint(x: -380.0, y: -720.0)
+        self.addChild(joystick)
+        joystick.alpha = 0.8
+        // 刚开始
+        joystick.beginHandler = { [unowned self] in
+            guard let sprite = self.playerNode else {
+                return
+            }
+            print("begin",sprite);
+        }
+        // 追踪
+        joystick.trackingHandler = {[unowned self] data in
+            guard let sprite = self.playerNode else {
+                return
+            }
+            let x = data.velocity.x * 0.12
+            let y = data.velocity.y * 0.12
+            let xPos = sprite.position.x + x
+            let yPos = sprite.position.y + y
+            sprite.position = CGPoint(x: xPos, y: yPos)
+            //sprite.zRotation = data.angular // 飞机转向;
+        }
+        // 停止
+        joystick.stopHandler = { [unowned self]  in
+            guard let sprite = self.playerNode else {
+                return
+            }
+            print("stop",sprite);
+        }
     }
     
+    func createFireNode(){
+        fireNode = SKSpriteNode(imageNamed: "jSubstrate")
+        fireNode.setScale(2.7)
+        fireNode.alpha = 0.8
+        self.addChild(fireNode)
+        fireNode.zPosition = 1
+        fireNode.position = CGPoint(x: 380.0, y: -720.0)
+    }
     /*
      * 手机加速计感应
      * 注意：加速计应在模拟器Simulater无法感应，须用真机进行调试
      */
-    func startMonitoringAcceleration(){
-        if motionManager.isAccelerometerAvailable {
-            updateAccleration()
-        }
-    }
-    
-    func updateAccleration(){
-        
-        motionManager.accelerometerUpdateInterval = 0.2 /// 感应时间
-        motionManager.startAccelerometerUpdates(to: OperationQueue.current!) { (data, error) in
-            ///1. 取得data数据;
-            guard let accelerometerData = data else {
-                return
-            }
-            ///2. 取得加速度
-            let acceleration = accelerometerData.acceleration
-            ///3. 更新XAcceleration的值
-            let filterFactor:CGFloat = 0.75 //fiter的加入是很有必要的，这样处理一下得到的数据更加平滑
-            self.xAcceleration = CGFloat(acceleration.x) * filterFactor + self.xAcceleration * (1 - filterFactor)
-            self.yAcceleration = CGFloat(acceleration.y) * filterFactor + self.yAcceleration * (1 - filterFactor)
-            
-        }
-    }
-    //MARK: -- 停止Acceleration
-    func stopMonitoringAcceleration(){
-        if motionManager.isAccelerometerAvailable && motionManager.isAccelerometerActive {
-            motionManager.stopAccelerometerUpdates()
-        }
-    }
+//    func startMonitoringAcceleration(){
+//        if motionManager.isAccelerometerAvailable {
+//            updateAccleration()
+//        }
+//    }
+//
+//    func updateAccleration(){
+//
+//        motionManager.accelerometerUpdateInterval = 0.2 /// 感应时间
+//        motionManager.startAccelerometerUpdates(to: OperationQueue.current!) { (data, error) in
+//            ///1. 取得data数据;
+//            guard let accelerometerData = data else {
+//                return
+//            }
+//            ///2. 取得加速度
+//            let acceleration = accelerometerData.acceleration
+//            ///3. 更新XAcceleration的值
+//            let filterFactor:CGFloat = 0.75 //fiter的加入是很有必要的，这样处理一下得到的数据更加平滑
+//            self.xAcceleration = CGFloat(acceleration.x) * filterFactor + self.xAcceleration * (1 - filterFactor)
+//            self.yAcceleration = CGFloat(acceleration.y) * filterFactor + self.yAcceleration * (1 - filterFactor)
+//
+//        }
+//    }
+//    //MARK: -- 停止Acceleration
+//    func stopMonitoringAcceleration(){
+//        if motionManager.isAccelerometerAvailable && motionManager.isAccelerometerActive {
+//            motionManager.stopAccelerometerUpdates()
+//        }
+//    }
     /// command + option + <- (箭头) 折叠 || command + option + -> (箭头) 打开
     func  updateBackground(deltaTime:TimeInterval){
         // 下移
@@ -325,8 +372,8 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     override func didSimulatePhysics() {
         /// 取得xAcceleration的加速度
         /// 速度乘以时间得到应该移动的距离，更新现在飞船应该在的位置
-        self.playerNode.position.x += self.xAcceleration * 50 /// * 50表示时间
-        self.playerNode.position.y += self.yAcceleration * 50
+//        self.playerNode.position.x += self.xAcceleration * 50 /// * 50表示时间
+//        self.playerNode.position.y += self.yAcceleration * 50
         // 让player => SpaceShip在屏幕之间滑动 x
         // X-Axis X轴水平方向 最小值
         // 如果player的x-axis最小值 < player飞船的size.with 1/2 设飞船的最小值为 size.with/2
@@ -376,6 +423,6 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     
     // MARK: - 停止加速计
     deinit {
-        stopMonitoringAcceleration()
+       // stopMonitoringAcceleration()
     }
 }
