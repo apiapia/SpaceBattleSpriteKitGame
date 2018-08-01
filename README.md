@@ -1,6 +1,10 @@
+ 
+ *** 更新重力感应为游戏摇杆  *** <br>
+ 
+<img src="https://upload-images.jianshu.io/upload_images/3896436-2bba16efeb6cc8a6.gif?imageMogr2/auto-orient/"> 
+ 
  <img src="https://upload-images.jianshu.io/upload_images/3896436-7becf3b55e8fb039.gif">
  
-
 
 /*
  *  游戏中的所有元素全部由iFIERO所原创(除引用之外)，包括人物、音乐、场景等，
