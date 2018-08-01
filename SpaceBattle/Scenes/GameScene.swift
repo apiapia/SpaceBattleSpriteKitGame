@@ -115,8 +115,8 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     //MARK:-// 加入游戏手柄
     func createJoyStick(){
         joystick = AnalogJoystick(diameter: CGFloat(250.0))
-        joystick.stick.image = UIImage(named: "jStick")
-        joystick.substrate.image = UIImage(named: "jSubstrate")
+        joystick.stick.image = UIImage(named: "joyStickStick")
+        joystick.substrate.image = UIImage(named: "joyStickBase")
         joystick.zPosition = 1
         joystick.position = CGPoint(x: -380.0, y: -720.0)
         self.addChild(joystick)

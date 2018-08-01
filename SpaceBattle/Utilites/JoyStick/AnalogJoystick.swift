@@ -1,8 +1,7 @@
 //
 //  AnalogStick.swift
 //  Joystick
-//
-//  Created by Dmitriy Mitrophanskiy on 28.09.14.
+//  Created by Dmitriy Mitrophanskiy.
 //
 //
 import SpriteKit
