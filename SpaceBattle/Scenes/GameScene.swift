@@ -50,9 +50,7 @@ struct  PhysicsCategory {
 }
 
 class GameScene: SKScene,SKPhysicsContactDelegate {
-    
-    private var bgNode1:SKSpriteNode!
-    private var bgNode2:SKSpriteNode!
+
     private var playerNode:SKSpriteNode!  // 玩家 宇宙飞船
     private var currentScore:SKLabelNode! // 当前分数节点
     private var cScore:Int = 0
@@ -74,9 +72,6 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
         // 碰撞接触代理
         physicsWorld.contactDelegate = self
-        // 背景节点
-        bgNode1 = childNode(withName: "BG1") as! SKSpriteNode
-        bgNode2 = childNode(withName: "BG2") as! SKSpriteNode
         // 分数节点
         currentScore = childNode(withName: "currentScore") as! SKLabelNode
         highScore    = childNode(withName: "highScore")    as! SKLabelNode
@@ -193,15 +188,14 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     /// command + option + <- (箭头) 折叠 || command + option + -> (箭头) 打开
     func  updateBackground(deltaTime:TimeInterval){
         // 下移
-        bgNode1.position.y -= CGFloat(deltaTime * 300)
-        bgNode2.position.y -= CGFloat(deltaTime * 300)
-        // 第一个背景node
-        if bgNode1.position.y  < -bgNode1.size.height {
-            bgNode1.position.y = bgNode2.position.y + bgNode2.size.height
-        }
-        // 第二个背景node
-        if bgNode2.position.y  < -bgNode2.size.height {
-            bgNode2.position.y = bgNode1.position.y + bgNode1.size.height
+        enumerateChildNodes(withName: "bgNode") { (node, _) in
+            guard let sprite = node as? SKSpriteNode else {
+                return
+            }
+            sprite.position.y -= CGFloat(deltaTime * 300)
+            if sprite.position.y < -self.frame.size.height {
+              sprite.position.y += 2 * self.frame.size.height
+            }
         }
         
     }
