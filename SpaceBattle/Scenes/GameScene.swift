@@ -40,12 +40,14 @@
 import SpriteKit
 import GameplayKit
 import CoreMotion
+import AVFoundation
 
 struct  PhysicsCategory {
     // static let BulletRed :UInt32 = 0x1 << 1 // Alien的子弹
     static let BulletBlue:UInt32 = 0x1 << 2
     static let Alien     :UInt32 = 0x1 << 3
     static let SpaceShip :UInt32 = 0x1 << 4
+    static let Emitt     :UInt32 = 0x1 << 5
     static let None      :UInt32 = 0
 }
 
@@ -58,6 +60,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     private var hScore:Int = 0
     private var joystick:AnalogJoystick!  // 游戏摇杆;
     private var fireNode:SKSpriteNode!    // 子弹发射;
+    private var avPlayer:AVAudioPlayer!
     
     var lastUpdateTimeInterval:TimeInterval = 0
     var deltaTime:TimeInterval = 0
@@ -87,9 +90,17 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         highScore.text = "HIGH:\(hScore)"
         
         // 背景音乐
-        let bgMusic = SKAudioNode(fileNamed: "spaceBattle.mp3")
-        bgMusic.autoplayLooped = true
-        addChild(bgMusic)
+        let path = Bundle.main.path(forResource: "background", ofType: "mp3")
+        let pathUrl = URL(fileURLWithPath: path!)
+        
+        do {
+            try avPlayer = AVAudioPlayer(contentsOf: pathUrl)
+        }catch {
+            return
+        }
+        
+        avPlayer.play()
+        avPlayer.volume = 0.2
         // 加入玩家飞船
         playerNode = childNode(withName: "SpaceShip") as! SKSpriteNode
         // playerNode.physicsBody = SKPhysicsBody(circleOfRadius: self.playerNode.size.width / 2)
@@ -207,52 +218,70 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         let _ = touch.location(in: self) // touchLocation
         // 播放torpedo发射音乐
         let actionFire = SKAction.playSoundFileNamed("torpedo.mp3", waitForCompletion: false)
-        run(actionFire)
+        // run(actionFire)
         
-        spawnBulletAndFire() // 生成并发射子弹
+        spawnBulletAndFire(x:-600) // 生成并发射子弹
+        spawnBulletAndFire(x:-400) // 生成并发射子弹
+        spawnBulletAndFire(x:-200) // 生成并发射子弹
+        spawnBulletAndFire(x:0) // 生成并发射子弹
+        spawnBulletAndFire(x:200) // 生成并发射子弹
+        spawnBulletAndFire(x:400) // 生成并发射子弹
+        spawnBulletAndFire(x:600) // 生成并发射子弹
+        
         
     }
     // MARK: - 生成并发射子弹;
-    func spawnBulletAndFire(){
+    func spawnBulletAndFire(x:CGFloat){
         // 子弹
-        let bulletNode = SKSpriteNode(imageNamed: "BulletBlue")
-        bulletNode.position.x = playerNode.position.x
-        // 子弹的Y轴位置 因为playNode的AnchorPoit位于飞船中心 所以子弹发射时的瞬间位置位于飞船正中心,要加上飞船的半径，位于枪口;
-        bulletNode.position.y = playerNode.position.y + playerNode.size.height / 2
-        bulletNode.zPosition = 1
-        self.addChild(bulletNode)
-        bulletNode.physicsBody = SKPhysicsBody(circleOfRadius: bulletNode.size.width / 2)
-        bulletNode.physicsBody?.affectedByGravity = false // 子弹不受重力影响;
-        bulletNode.physicsBody?.categoryBitMask   =  PhysicsCategory.BulletBlue
-        bulletNode.physicsBody?.contactTestBitMask = PhysicsCategory.Alien
-        bulletNode.physicsBody?.collisionBitMask = PhysicsCategory.None
-        //子弹飞速运动，设置探测精细碰撞
-        bulletNode.physicsBody?.usesPreciseCollisionDetection = true
-        
-        // 把子弹往上移出屏幕
-        let moveTo = CGPoint(x: playerNode.position.x, y: playerNode.position.y + self.frame.size.height)
-        // bulletNode.run(SKAction.move(to:moveTo, duration: TimeInterval(0.5)))
-        /*
-         * 粒子效果
-         * 1.新建一个SKNode => trailNode
-         * 2.新建粒子效果SKEmitterNode,设置tragetNode = trailNode
-         * 3.子弹加上emitterNode
-         */
-        let trailNode = SKNode()
-        trailNode.zPosition = 1
-        trailNode.name = "trail"
-        addChild(trailNode)
-        
-        let emitterNode = SKEmitterNode(fileNamed: "ShootTrailBlue")! // particles文件夹存放粒子效果
-       // emitterNode.targetNode = trailNode  // 设置粒子效果的目标为trailNode => 跟随新建的trailNode
-        bulletNode.addChild(emitterNode)    // 在子弹节点Node加上粒子效果;
-        
-        bulletNode.run(SKAction.sequence([
+      
+            
+            let bulletNode = SKSpriteNode(imageNamed: "BulletBlue")
+            bulletNode.position.x = playerNode.position.x
+            // 子弹的Y轴位置 因为playNode的AnchorPoit位于飞船中心 所以子弹发射时的瞬间位置位于飞船正中心,要加上飞船的半径，位于枪口;
+            bulletNode.position.y = playerNode.position.y + playerNode.size.height / 2
+            bulletNode.zPosition = 1
+            self.addChild(bulletNode)
+            bulletNode.physicsBody = SKPhysicsBody(circleOfRadius: bulletNode.size.width / 2)
+            bulletNode.physicsBody?.affectedByGravity = false // 子弹不受重力影响;
+            bulletNode.physicsBody?.categoryBitMask   =  PhysicsCategory.BulletBlue
+            bulletNode.physicsBody?.contactTestBitMask = PhysicsCategory.Alien
+            bulletNode.physicsBody?.collisionBitMask = PhysicsCategory.None
+            //子弹飞速运动，设置探测精细碰撞
+            bulletNode.physicsBody?.usesPreciseCollisionDetection = true
+            
+            // 把子弹往上移出屏幕
+            let moveTo = CGPoint(x: playerNode.position.x + x, y: playerNode.position.y + self.frame.size.height)
+            
+            // bulletNode.run(SKAction.move(to:moveTo, duration: TimeInterval(0.5)))
+            /*
+             * 粒子效果
+             * 1.新建一个SKNode => trailNode
+             * 2.新建粒子效果SKEmitterNode,设置tragetNode = trailNode
+             * 3.子弹加上emitterNode
+             */
+            let trailNode = SKNode()
+            trailNode.zPosition = 1
+            //trailNode.name = "trail"
+            addChild(trailNode)
+            
+            let emitterNode = SKEmitterNode(fileNamed: "ShootTrailBlue")! // particles文件夹存放粒子效果
+            emitterNode.targetNode = trailNode  // 设置粒子效果的目标为trailNode => 跟随新建的trailNode
+            bulletNode.addChild(emitterNode)    // 在子弹节点Node加上粒子效果;
+
+//            emitterNode.physicsBody = SKPhysicsBody(rectangleOf: emitterNode.particleSize)
+//            emitterNode.physicsBody?.categoryBitMask = PhysicsCategory.Emitt
+//            emitterNode.physicsBody?.contactTestBitMask = PhysicsCategory.Alien
+//            emitterNode.physicsBody?.usesPreciseCollisionDetection = true
+//            emitterNode.physicsBody?.collisionBitMask = PhysicsCategory.None
+            bulletNode.run(SKAction.sequence([
             SKAction.move(to: moveTo, duration: TimeInterval(0.5)),
             SKAction.run({
-                bulletNode.removeFromParent() // 移除 子弹bulltedNode
-                trailNode.removeFromParent()  // 移除 trailNode
+            bulletNode.removeAllChildren() // 移除 emitterNode
+            bulletNode.removeFromParent() // 移除 子弹bulltedNode
+            trailNode.removeFromParent()  // 移除 trailNode
             })]))
+       
+        
     }
     // 生成随机Alien
     @objc func spawnAlien() {
@@ -289,7 +318,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         
     }
     
-    
+ 
     // MARK: 子弹vs外星人
     func bulletHitAlien(nodeA:SKSpriteNode,nodeB:SKSpriteNode){
         
@@ -305,7 +334,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
             }]))
         // 击中的音乐
         let actionColision = SKAction.playSoundFileNamed("explosion.mp3", waitForCompletion: false)
-        run(actionColision)
+       // run(actionColision)
         
         // 分数统计
         cScore += 1
@@ -350,6 +379,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
                 loseMusicAction,
                 SKAction.wait(forDuration: TimeInterval(0.7)),
                 SKAction.run {
+                    self.avPlayer.stop()
                     // 切换游戏结束场景
                     let reveal = SKTransition.doorsOpenHorizontal(withDuration: TimeInterval(0.5))
                     let loseScene = LoseScene(fileNamed: "LoseScene")
@@ -399,6 +429,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         /// 外星人Alien撞击到飞船
         case PhysicsCategory.Alien | PhysicsCategory.SpaceShip:
             alienHitSpaceShip(nodeA: contact.bodyA.node as! SKSpriteNode, nodeB: contact.bodyB.node as! SKSpriteNode)
+        
         default:
             break
         }

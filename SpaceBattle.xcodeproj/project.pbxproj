@@ -23,7 +23,7 @@
 		215A536A206FD0CD0089ECDB /* torpedo.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 215A5369206FD0CD0089ECDB /* torpedo.mp3 */; };
 		215A536C206FD0D70089ECDB /* explosion.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 215A536B206FD0D70089ECDB /* explosion.mp3 */; };
 		215A536E206FD0DF0089ECDB /* Explosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = 215A536D206FD0DF0089ECDB /* Explosion.sks */; };
-		215A537320724FAB0089ECDB /* spaceBattle.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 215A537220724FAB0089ECDB /* spaceBattle.mp3 */; };
+		215A537320724FAB0089ECDB /* background.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 215A537220724FAB0089ECDB /* background.mp3 */; };
 		21A5F816207D162E0032B5E9 /* MainScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 21A5F815207D162E0032B5E9 /* MainScene.sks */; };
 		21A5F818207D164E0032B5E9 /* WonScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 21A5F817207D164E0032B5E9 /* WonScene.sks */; };
 		21A5F81A207D16590032B5E9 /* LoseScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 21A5F819207D16590032B5E9 /* LoseScene.sks */; };
@@ -51,7 +51,7 @@
 		215A5369206FD0CD0089ECDB /* torpedo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = torpedo.mp3; sourceTree = "<group>"; };
 		215A536B206FD0D70089ECDB /* explosion.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = explosion.mp3; sourceTree = "<group>"; };
 		215A536D206FD0DF0089ECDB /* Explosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Explosion.sks; sourceTree = "<group>"; };
-		215A537220724FAB0089ECDB /* spaceBattle.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = spaceBattle.mp3; sourceTree = "<group>"; };
+		215A537220724FAB0089ECDB /* background.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = background.mp3; sourceTree = "<group>"; };
 		21A5F815207D162E0032B5E9 /* MainScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MainScene.sks; sourceTree = "<group>"; };
 		21A5F817207D164E0032B5E9 /* WonScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = WonScene.sks; sourceTree = "<group>"; };
 		21A5F819207D16590032B5E9 /* LoseScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LoseScene.sks; sourceTree = "<group>"; };
@@ -136,7 +136,7 @@
 		215A5368206FD0C10089ECDB /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
-				215A537220724FAB0089ECDB /* spaceBattle.mp3 */,
+				215A537220724FAB0089ECDB /* background.mp3 */,
 				215A5369206FD0CD0089ECDB /* torpedo.mp3 */,
 				215A536B206FD0D70089ECDB /* explosion.mp3 */,
 			);
@@ -227,7 +227,7 @@
 				211B2D0720767658008686C2 /* ShootTrailBlue.sks in Resources */,
 				215A5360206FD07F0089ECDB /* LaunchScreen.storyboard in Resources */,
 				215A536C206FD0D70089ECDB /* explosion.mp3 in Resources */,
-				215A537320724FAB0089ECDB /* spaceBattle.mp3 in Resources */,
+				215A537320724FAB0089ECDB /* background.mp3 in Resources */,
 				215A536E206FD0DF0089ECDB /* Explosion.sks in Resources */,
 				215A536A206FD0CD0089ECDB /* torpedo.mp3 in Resources */,
 				21A5F816207D162E0032B5E9 /* MainScene.sks in Resources */,

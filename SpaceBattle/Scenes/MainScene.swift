@@ -6,20 +6,22 @@
 //
 
 import SpriteKit
+import AVFoundation
 
 class MainScene:SKScene {
     
     private var play:SKSpriteNode!
     private var learnTemp:SKSpriteNode!
+    private var avPlayer:AVAudioPlayer!
     
     override func didMove(to view: SKView) {
         
         play = childNode(withName: "Play") as! SKSpriteNode
         learnTemp = childNode(withName: "learnTemp") as! SKSpriteNode
         // 背景音乐
-        let bgMusic = SKAudioNode(fileNamed: "spaceBattle.mp3")
-        bgMusic.autoplayLooped = true
-        addChild(bgMusic)
+       // let bgMusic = SKAudioNode(fileNamed: "spaceBattle.mp3")
+       // bgMusic.autoplayLooped = true
+       // addChild(bgMusic)
      
         
     }
